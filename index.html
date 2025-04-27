@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Lista de Compras</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Compras</h1>
+        <ul id="listaDeCompras"></ul>
+        <input type="text" id="itemInput" placeholder="Digite o Item"> <br>
+        <button id="adicionarItemBtn">Adicionar Item</button>
+    </div>
+
+    <script>
+        //Aguarda  o carregamento do DOM antes de executar qualquer lógica
+        document.addEventListener('DOMContentLoaded', iniciarApp);
+
+        //Função principal que inicializa o app
+        function iniciarApp(){
+            //array onde os itens da lista serão armazenados
+            let listaDeCompras = []
+
+            //Itens que já aparecem na lissta ao carregar a página
+            let itensIniciais = ['arroz', 'feijão', 'macarrão']
+
+            //pegando os elementos HTML: a <ul>, o botão e o campo de texto
+            let listaElement = document.getElementById('listaDeCompras');
+            let botaoAdicionar = document.getElementById('adicionarItemBtn');
+            let campoInput = document.getElementById('itemInput')
+
+            //adiciona os itens iniciais à lista
+            inicializarLista(itensIniciais);
+
+            //adiciona o evento de clique ao botão
+            botaoAdicionar.addEventListener('click', adicionarMaisItens);
+
+            //Função quqe adiciona os itens iniciais no array e no DOM
+            function inicializarLista(itens){
+                for (let i = 0; i < itens.length; i++){
+                    adicionarItem(itens[i]);
+                }
+            }
+
+            //adiciona o item ao array e também no DOM
+            function adicionarItem(item){
+                listaDeCompras.push(item);
+                adicionarItemNoDOM(item);
+            }
+
+            //cria o <li> com o nome do item e coloca dentro da <ul>
+            function adicionarItemNoDOM(item){
+                let li = document.createElement('li');
+                li.textContent = item;
+                listaElement.appendChild(li);
+            }
+
+            function adicionarMaisItens(){
+                //verifica se já temos 5 itens ou mais
+                if(listaDeCompras.length>=5){
+                    alert('Sua lista está completa.');
+                    return; //Sai da função se a lista estiver cheia
+                }
+
+                //pega o valor digitado no camppo input, removendo espaços extras
+                var novoItem = campoInput.value.trim();
+
+                //Impede que um item vazio seja adicionado
+                if(novoItem===''){
+                    alert('Diigite um item válido.');
+                    return;
+                }
+
+                //adiciona o item válido à lista
+                adicionarItem(novoItem);
+
+                //mostra mensagem de sucesso
+                alert('Item adicionado com sucesso!')
+
+                //Limpa o campo input e coloca o foco nele novamente
+                campoInput.value = '';
+                campoInput.focus();
+
+                //se agora a lista tem 5 ou mais itens, mostra o alerta final
+                if(listaDeCompras.length>=5){
+                    alert('Sua lista está completa.')
+                }
+            }
+        }
+    </script>
+</body>
+</html>
